@@ -1,0 +1,139 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": false,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'sha256-mP59AAhf+MgZZqGNO38U7VWMI2CxoCdSzPFAoob1DLo=' 'sha256-KJZOTsTihkPC6SbKVQRH2seEq/eKKDSwSGQK4mHSzWY=' 'sha256-jimIPNXMdRdFJIHyipSE5KbjzFgiCrqtZZP5A+C8a3A='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' mailto:"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=()"
+        }
+      ]
+    },
+    {
+      "source": "/(.*).mjs",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/javascript; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/vendor/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/yazitipleri/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=2592000"
+        }
+      ]
+    },
+    {
+      "source": "/gorseller/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/hizmetdetay/savunma-tekstilleri-cozumleri",
+      "destination": "/#hizmet-savunma",
+      "permanent": true
+    },
+    {
+      "source": "/hizmetdetay/entegre-uretim-surec-yonetimi",
+      "destination": "/#hizmet-entegre",
+      "permanent": true
+    },
+    {
+      "source": "/hizmetdetay/laboratuvar-test-ve-analiz-hizmetleri",
+      "destination": "/#hizmet-laboratuvar",
+      "permanent": true
+    },
+    {
+      "source": "/hizmetdetay/uretim-kontrol-ve-denetim-surecleri",
+      "destination": "/#hizmet-kontrol",
+      "permanent": true
+    },
+    {
+      "source": "/hizmetdetay/teknik-tekstil-danismanligi",
+      "destination": "/#hizmet-danismanlik",
+      "permanent": true
+    },
+    {
+      "source": "/hizmetdetay/fonksiyonel-tekstil-uygulamalari",
+      "destination": "/#hizmet-fonksiyonel",
+      "permanent": true
+    },
+    {
+      "source": "/hizmetler",
+      "destination": "/#hizmetler",
+      "permanent": true
+    },
+    {
+      "source": "/sayfa/hakkimizda",
+      "destination": "/#hakkimizda",
+      "permanent": true
+    },
+    {
+      "source": "/sayfa/vizyonumuz",
+      "destination": "/#vizyon",
+      "permanent": true
+    },
+    {
+      "source": "/sayfa/misyonumuz",
+      "destination": "/#vizyon",
+      "permanent": true
+    },
+    {
+      "source": "/galeri",
+      "destination": "/#galeri",
+      "permanent": true
+    },
+    {
+      "source": "/iletisim",
+      "destination": "/#iletisim",
+      "permanent": true
+    },
+    {
+      "source": "/insankaynaklari",
+      "destination": "/#iletisim",
+      "permanent": true
+    },
+    {
+      "source": "/index.php",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
+}
