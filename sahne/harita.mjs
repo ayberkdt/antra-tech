@@ -9,6 +9,7 @@
  * Saf yardımcılar (çöz, izdüşüm, mesafe) dışa açıktır; araclar/dogrula.mjs Node'da sınar.
  */
 import { MASKE } from './harita-veri.mjs';
+import { sayi } from '../ceviri.mjs';
 
 /** base64 → bayt dizisi (tarayıcı ve Node) */
 function bayt(b64) {
@@ -146,7 +147,7 @@ export function haritaKur(kok, { azHareket = false } = {}) {
     el.addEventListener('pointerleave', () => sec(null));
   }
   /* mesafe rakamları dile göre biçimlenir (HTML'de Türkçe biçimle yazılı) */
-  const kmYaz = () => kok.querySelectorAll('[data-km]').forEach((el) => { el.textContent = (+el.dataset.km).toLocaleString(document.documentElement.lang === 'en' ? 'en-GB' : 'tr-TR'); });
+  const kmYaz = () => kok.querySelectorAll('[data-km]').forEach((el) => { el.textContent = sayi(+el.dataset.km); });
   kmYaz(); document.addEventListener('dil-degisti', kmYaz);
   if (azHareket) kok.classList.add('gorundu');
   return { yenile };

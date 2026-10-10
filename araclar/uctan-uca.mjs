@@ -73,6 +73,8 @@ async function sekmeAc() {
 /* düzen ölçen senaryolar önce otursun: yazı tipleri insin, iki kare geçsin (yedek yazının satır yüksekliği ölçümü bozar) */
 const OTUR = 'document.fonts.ready.then(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => r(true)))))';
 
+/* dil değişimi eşzamansız (sözlük ilk seçimde iner): sabit bekleme yerine <html lang> hedef dile dönene kadar, en çok 6 s */
+const dilBekle = async (s, d) => { for (const t0 = Date.now(); Date.now() - t0 < 6000; await bekle(100)) if ((await s.js('document.documentElement.lang')) === d) { await bekle(50); return; } };
 const SENARYO = {
   async 'form: boş gönderim hata verir, geçerli gönderim mührü basar'(s) {
     await s.git('./#iletisim');
@@ -94,11 +96,12 @@ const SENARYO = {
   },
   async 'dil: EN’e geçiş metni, başlığı, adresi ve künyeyi çevirir; geri döner'(s) {
     await s.git('./?dil=tr');
-    await s.js(`document.getElementById('dil-dugme').click()`);
-    await bekle(200);
+    await s.js(`document.getElementById('dil-dugme').click(); document.querySelector('#dil-liste [data-dil="en"]').click()`);
+    await dilBekle(s, 'en');
     const en = await s.js(`[document.documentElement.lang, document.title, location.search, document.querySelector('[data-i18n="navHizmetler"]').textContent, document.getElementById('kunye-orgu-ad').textContent]`);
     if (en[0] !== 'en' || !en[1].includes('Technical') || en[2] !== '?dil=en' || en[3] !== 'Services' || !en[4].includes('twill')) throw new Error(`EN: ${en}`);
-    await s.js(`document.getElementById('dil-dugme').click()`);
+    await s.js(`document.getElementById('dil-dugme').click(); document.querySelector('#dil-liste [data-dil="tr"]').click()`);
+    await dilBekle(s, 'tr');
     const tr = await s.js(`[document.documentElement.lang, document.querySelector('[data-i18n="navHizmetler"]').textContent]`);
     if (tr[0] !== 'tr' || tr[1] !== 'Hizmetler') throw new Error(`TR: ${tr}`);
     /* JS'in yazdığı metinler de dil değişiminde yenilenir: muayene tuvalinin etiketi, form mesajı, saat eki */
@@ -109,8 +112,8 @@ const SENARYO = {
     for (let k = 0; k < 40 && !(await s.js(`document.getElementById('acik-durum').textContent.trim()`)); k++) await bekle(100);
     const once = await s.js(`document.getElementById('acik-durum').textContent`);
     if (!/’(da|de|ta|te|a|e|ya|ye) /.test(once)) throw new Error(`saat eki: ${once}`);
-    await s.js(`document.getElementById('dil-dugme').click()`);
-    await bekle(200);
+    await s.js(`document.getElementById('dil-dugme').click(); document.querySelector('#dil-liste [data-dil="en"]').click()`);
+    await dilBekle(s, 'en');
     const js = await s.js(`[document.getElementById('lab-tuval').getAttribute('aria-label'), document.getElementById('form-durum').textContent]`);
     if (!js[0].startsWith('Fabric inspection') || !js[1].startsWith('Please')) throw new Error(`EN JS metinleri: ${js}`);
     /* 404 sayfası kayıtlı dil tercihine uyar (az önceki geçiş "en" kaydetti) ve ana sayfaya o dille döner; CSP özeti tutmazsa betik çalışmaz */
@@ -170,8 +173,8 @@ const SENARYO = {
     const f = await s.js(`[document.getElementById('f-mesaj').value, document.querySelector('input[name="konu"]:checked').value, document.activeElement.id, document.getElementById('f-mesaj').placeholder, location.hash]`);
     if (f[0] !== '' || f[1] !== 'Bilgi edinme' || f[2] !== 'f-mesaj' || !f[3].startsWith('Desen fikrinizi') || f[4] !== '#iletisim') throw new Error(`form: ${JSON.stringify(f)}`);
     /* İngilizcede yüzde işareti sayıdan sonra gelir (Türkçe %20 → İngilizce 20%) */
-    await s.js(`document.getElementById('dil-dugme').click()`);
-    await bekle(200);
+    await s.js(`document.getElementById('dil-dugme').click(); document.querySelector('#dil-liste [data-dil="en"]').click()`);
+    await dilBekle(s, 'en');
     const en = await s.js(`document.getElementById('atolye-analiz').textContent.replace(/\\s+/g, ' ')`);
     if (!en.includes('20%') || /%\\d/.test(en)) throw new Error(`EN analiz: ${en}`);
   },
@@ -381,6 +384,34 @@ const SENARYO = {
       }
     }
     if (sorun.length) throw new Error(sorun.join(' | '));
+  },
+  async 'diller: RU/DE/AR menüden seçilir (lang, dir, başlık, kanonik, metin), Esc ve oklar çalışır, ?dil=ar sağdan sola ve taşmasız'(s) {
+    await s.git('./?dil=tr');
+    const BEK = { ru: ['Услуги', 'ltr'], de: ['Leistungen', 'ltr'], ar: ['الخدمات', 'rtl'] };
+    for (const [d, [hiz, yon]] of Object.entries(BEK)) {
+      await s.js(`document.getElementById('dil-dugme').click()`);
+      const acik = await s.js(`[document.getElementById('dil-dugme').getAttribute('aria-expanded'), document.getElementById('dil-liste').hidden, document.activeElement.dataset.dil || '']`);
+      if (acik[0] !== 'true' || acik[1] || !acik[2]) throw new Error(`menü açılmadı (${d}): ${acik}`);
+      await s.js(`document.querySelector('#dil-liste [data-dil="${d}"]').click()`);
+      await dilBekle(s, d);
+      const r = await s.js(`[document.documentElement.lang, document.documentElement.dir, document.querySelector('[data-i18n="navHizmetler"]').textContent, document.title, document.querySelector('link[rel="canonical"]').href, location.search, document.getElementById('dil-liste').hidden, document.querySelector('#dil-dugme .dil__kod').textContent, document.querySelector('#dil-liste [aria-current="true"]').dataset.dil]`);
+      if (r[0] !== d || r[1] !== yon || r[2] !== hiz || !r[3].startsWith('Antra Tech — ') || r[4] !== `https://www.antratech.net/?dil=${d}` || r[5] !== `?dil=${d}` || !r[6] || r[7] !== d.toUpperCase() || r[8] !== d) throw new Error(`${d}: ${JSON.stringify(r)}`);
+    }
+    /* klavye: menü açılınca odak etkin dilde, aşağı ok bir sonrakine, Esc kapatır ve odağı düğmeye döndürür */
+    await s.js(`document.getElementById('dil-dugme').click()`);
+    const k1 = await s.js(`document.activeElement.dataset.dil`);
+    await s.tus('ArrowDown', 'ArrowDown', 40);
+    const k2 = await s.js(`document.activeElement.dataset.dil`);
+    await s.tus('Escape', 'Escape', 27);
+    const k3 = await s.js(`[document.getElementById('dil-liste').hidden, document.activeElement.id]`);
+    if (k1 !== 'ar' || k2 !== 'tr' || !k3[0] || k3[1] !== 'dil-dugme') throw new Error(`klavye: ${k1} ${k2} ${k3}`);
+    /* Arapça adresle açılış: sağdan sola, yatay taşma yok */
+    for (const [g, y] of [[1440, 900], [390, 844]]) {
+      await s.git('./?dil=ar', g, y);
+      await bekle(600);
+      const a = await s.js(`[document.documentElement.dir, document.documentElement.lang, document.documentElement.scrollWidth, document.documentElement.clientWidth, getComputedStyle(document.body).visibility]`);
+      if (a[0] !== 'rtl' || a[1] !== 'ar' || a[2] > a[3] || a[4] !== 'visible') throw new Error(`?dil=ar ${g}px: ${JSON.stringify(a)}`);
+    }
   },
   async 'dil: İngilizce tarayıcıda hiçbir karede Türkçe metin parlamaz'(s) {
     /* önceki senaryoların kaydettiği dil tercihi (localStorage) tarayıcı dilinin önüne geçer: temizle */

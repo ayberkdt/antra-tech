@@ -40,18 +40,27 @@
   <a href="/" id="don">Ana sayfaya dön</a>
 </main>
 <script>
-  /* ana sayfayla aynı dil kuralı: ?dil → kayıtlı tercih → tarayıcı dili */
-  var dil = new URLSearchParams(location.search).get('dil'), kayit = null;
+  /* ana sayfayla aynı dil kuralı: ?dil → kayıtlı tercih → tarayıcı dil sırası; beş dil, Arapçada sağdan sola */
+  var L = ['tr', 'en', 'ru', 'de', 'ar'], dil = new URLSearchParams(location.search).get('dil'), kayit = null;
   try { kayit = localStorage.getItem('antratech-dil'); } catch (e) {}
-  if (dil !== 'tr' && dil !== 'en') dil = (kayit === 'tr' || kayit === 'en') ? kayit : (/^tr/i.test(navigator.language || 'tr') ? 'tr' : 'en');
-  if (dil === 'en') {
-    document.documentElement.lang = 'en';
-    document.title = 'Page not found — Antra Tech';
-    document.getElementById('kod').textContent = '404 · Broken thread';
-    document.getElementById('baslik').textContent = 'This page is not woven into our fabric';
-    document.getElementById('metin').textContent = 'The link may be old or mistyped. You can continue from the home page.';
-    document.getElementById('don').textContent = 'Back to home';
-    document.getElementById('don').setAttribute('href', '/?dil=en');
+  if (L.indexOf(dil) === -1) {
+    dil = L.indexOf(kayit) > -1 ? kayit : 'en';
+    if (L.indexOf(kayit) === -1) { var ls = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || 'tr']; for (var i = 0; i !== ls.length; i++) { var c = String(ls[i]).slice(0, 2).toLowerCase(); if (L.indexOf(c) > -1) { dil = c; break; } } }
+  }
+  var M = {
+    en: ['Page not found — Antra Tech', '404 · Broken thread', 'This page is not woven into our fabric', 'The link may be old or mistyped. You can continue from the home page.', 'Back to home'],
+    ru: ['Страница не найдена — Antra Tech', '404 · Нить оборвалась', 'Этой страницы нет в нашей ткани', 'Ссылка устарела или набрана с ошибкой. Продолжите с главной страницы.', 'На главную'],
+    de: ['Seite nicht gefunden — Antra Tech', '404 · Faden gerissen', 'Diese Seite ist nicht in unseren Stoff gewebt', 'Der Link ist veraltet oder falsch geschrieben. Weiter geht es auf der Startseite.', 'Zur Startseite'],
+    ar: ['الصفحة غير موجودة — Antra Tech', '404 · انقطع الخيط', 'هذه الصفحة غير منسوجة في قماشنا', 'قد يكون الرابط قديمًا أو مكتوبًا بشكل خاطئ. يمكنكم المتابعة من الصفحة الرئيسية.', 'العودة إلى الرئيسية']
+  };
+  if (M[dil]) {
+    document.documentElement.lang = dil; if (dil === 'ar') document.documentElement.dir = 'rtl';
+    document.title = M[dil][0];
+    document.getElementById('kod').textContent = M[dil][1];
+    document.getElementById('baslik').textContent = M[dil][2];
+    document.getElementById('metin').textContent = M[dil][3];
+    document.getElementById('don').textContent = M[dil][4];
+    document.getElementById('don').setAttribute('href', '/?dil=' + dil);
   }
 </script>
 </body>

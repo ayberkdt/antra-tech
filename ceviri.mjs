@@ -1,256 +1,28 @@
-/* ÇEVİRİ — TR / EN.
+/* ÇEVİRİ — TR / EN / RU / DE / AR.
  *
  * Türkçe metnin tek kaynağı index.html'dir: açılışta her [data-i18n] öğesinin metni
  * (ve -aria / -alt öznitelikleri) "tr" olarak okunur. Bu sözlükte yalnız:
- *   · EN sütunu (HTML'deki her anahtar için zorunlu; araclar/dogrula.mjs denetler)
- *   · yalnız JS'in kullandığı anahtarlar (TR + EN)
+ *   · yalnız JS'in kullandığı Türkçe anahtarlar (JS.tr)
+ *   · EN, RU, DE, AR: dil/*.mjs (SAYFA: HTML'deki her anahtar · JS: JS.tr'deki her anahtar), yalnız seçilince indirilir;
+ *     anahtar kümeleri, yer tutucular ve vurgu işaretleri dogrula.mjs'te sınanır
  * Orijinal sitenin İngilizce sürümü şablon dolgu metni içerdiğinden İngilizceler
  * bu sitenin çevirisidir (README'de belirtildi).
  */
 
-export const DILLER = ['tr', 'en'];
-
-export const EN = {
-  atla: 'Skip to content',
-  logoEtiket: 'Antra Tech — back to top',
-  menuEtiket: 'Main menu',
-  altMenuEtiket: 'Footer menu',
-  navHakkimizda: 'About',
-  navHizmetler: 'Services',
-  navSurec: 'Process',
-  navLab: 'Laboratory',
-  navGaleri: 'Gallery',
-  navIletisim: 'Contact',
-  ctaYazin: 'Get in touch',
-  ctaHizmetler: 'Our services',
-  menuAc: 'Open menu',
-
-  girisUst1: 'Technical textiles', girisUst2: 'Production control', girisUst3: 'Laboratory',
-  girisBaslik1: 'In technical textiles,',
-  girisBaslik2: 'strength has a name:',
-  girisMetin: 'With more than 30 years of experience, we manage your production processes to the highest quality standards.',
-  
-  girisEtiket2: 'Çorlu · Tekirdağ',
-  
-  kunyeEtiket: 'Specification of this fabric',
-  kunyeBaslik: 'Fabric specification',
-  kunyeOrgu: 'Weave', kunyeOrguD: '2/1 twill ground, 5‑end satin figure',
-  kunyeOrguIpucu: 'Changes the ground weave of the fabric',
-  kunyeRapor: 'Repeat', kunyeRaporD: '40 ends × 48 picks, half‑drop',
-  kunyeIplik: 'Yarn', kunyeIplikD: 'Navy warp · silver figure weft · red selvedge',
-  kunyeAtki: 'Picks woven',
-  
-
-  hakUst: 'Welcome',
-  hakBaslik: 'Your trusted partner in technical textiles and production control',
-  hakMetin1: 'Antra Tech is an engineering and production support company with [[more than 30 years of experience]] in the textile sector, specialised in [[technical textiles and production control]] processes.',
-  hakMetin2: 'Operating with deep know-how gained [[in Türkiye and the Turkic Republics]], we take a leading role in planning, implementing and supervising high-standard production processes.',
-  hakMetin3: 'Antra Tech guarantees quality at every stage of production through [[an engineering approach, laboratory testing and on-site inspections]]. Across the processes we run at integrated facilities, we develop solutions tailored to our clients and build reliable, sustainable, high-performance production systems.',
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  ilke1Baslik: 'Full control and quality assurance in production',
-  ilke1Metin: 'We meticulously inspect every process [[from raw material intake to the finished product]] and ensure production that complies with international standards.',
-  ilke2Baslik: 'Scientific verification through laboratory testing',
-  ilke2Metin: 'With tests carried out in our physical testing laboratories, we analyse the durability, performance and quality criteria of products.',
-  kurumBaslik: 'Institutions whose textile production we actively support',
-  
-  kurum1: 'Turkish Land Forces Command',
-  kurum2: 'Turkish Naval Forces Command',
-  kurum3: 'Turkish Air Force Command',
-  kurum4: 'Gendarmerie public order units',
-  kurum5: 'Ministry of Agriculture and Forestry',
-  
-  kurumGorev5: 'Fabric production · engineering and quality control',
-  
-  
-  
-
-  haritaBaslik: 'Where we work',
-  
-  ulke_tr: 'Türkiye', ulke_az: 'Azerbaijan', ulke_tm: 'Turkmenistan', ulke_uz: 'Uzbekistan', ulke_kg: 'Kyrgyzstan', ulke_kz: 'Kazakhstan',
-  baskent_az: 'Baku', baskent_tm: 'Ashgabat', baskent_uz: 'Tashkent', baskent_kg: 'Bishkek', baskent_kz: 'Astana',
-  haritaKaydir: 'Swipe →', haritaKaynak: 'Map data: NASA Visible Earth · Natural Earth',
-  kurumFoto: 'A team of three working over camouflage fabric and technical drawings on a table.', denizKara: 'Black Sea', denizHazar: 'Caspian', denizAk: 'Mediterranean', denizAral: 'Aral',
-  haritaNot: 'The countries we work in, with great-circle distances from Çorlu to each capital.',
-  haritaEtiket: 'Map of where we work: threads running from Çorlu to Azerbaijan, Turkmenistan, Uzbekistan, Kyrgyzstan and Kazakhstan',
-  hizUst: 'Our services',
-  hizBaslik: 'From production control to technical consulting',
-  hizAciklama: '[[Led by the defence industry]], we take an active role at every stage of public-sector and private-sector projects through production control, laboratory testing and on-site inspections.',
-  
-  grup1: 'Defence and quality assurance',
-  grup1A: 'Services that measure, inspect and safeguard production for critical institutions.',
-  grup2: 'Engineering and application',
-  grup2A: 'Services that set up the process, advise and adapt textiles to their end use.',
-  ayrinti: 'Details',
-  kumas1: 'Camouflage twill',
-  kumas2: 'Navy gabardine',
-  kumas3: 'Greige poplin',
-  kumas4: 'Ripstop',
-  kumas5: 'Aramid panama weave',
-  kumas6: 'Honeycomb weave',
-  hiz1Ad: 'Defence Textile Solutions',
-  hiz1Ozet: 'Production and control for textiles that demand high durability and performance, tailored to the needs of the armed forces.',
-  hiz1P1: 'Textiles produced for the defence industry are specialised products that demand high durability, safety and performance. Drawing on our experience in this field, Antra Tech provides production and control services that meet the needs of the service commands of the Turkish Armed Forces.',
-  hiz1P2: 'For military clothing, protective textiles and products for special applications, we manage production processes meticulously and keep quality standards at the highest level, providing engineering support and safeguarding every stage of production with on-site inspections.',
-  hiz1P3: 'In line with our vision of indigenous, home-grown production, we continue to develop projects that reduce foreign dependency in defence textiles.',
-  hiz2Ad: 'Integrated Production Process Management',
-  hiz2Ozet: 'An integrated approach that manages planning, production, quality control and shipment from a single centre.',
-  hiz2P1: 'Antra Tech works with an integrated management approach that covers the entire production process. During production at integrated facilities, every stage is continuously inspected by our field control teams.',
-  hiz2P2: 'This system covers planning, production, quality control and shipment, so continuity and quality standards are preserved. Managing processes from a single centre minimises communication errors and brings major advantages in time and cost.',
-  hiz2P3: 'With production processes configured to each client’s needs, we offer fast, flexible and reliable solutions.',
-  hiz3Ad: 'Laboratory Testing and Analysis',
-  hiz3Ozet: 'Rigorous analysis of durability, elasticity, abrasion resistance and performance against environmental factors.',
-  hiz3P1: 'Antra Tech applies comprehensive laboratory testing to guarantee quality in production. The durability, elasticity, abrasion resistance and performance of fabrics against environmental factors are analysed meticulously.',
-  hiz3P2: 'For technical textiles used in defence and public projects, compliance with international standards is the most important criterion. All tests are therefore carried out step by step, reported and, when needed, verified a second time at independent laboratories.',
-  hiz3Liste: 'Tests performed include:',
-  hiz3P3: 'In this way, Antra Tech provides quality control before and after production, eliminates potential risks and takes product performance to the highest level.',
-  hiz4Ad: 'Production Control and Inspection',
-  hiz4Ozet: 'Inspection for compliance and continuity at every stage, from raw material intake to shipment.',
-  hiz4P1: 'In production processes that require high precision, above all in the defence industry, quality control and inspection are among the most critical elements. At Antra Tech we follow every stage of production closely to guarantee compliance with standards and continuity.',
-  hiz4P2: 'By taking an active role in the textile production of institutions such as the Land, Naval and Air Force Commands and the Gendarmerie public order units, we minimise errors that may occur during production. Controls at every stage, from raw material intake to final shipment, keep quality standards high.',
-  hiz4P3: 'Inspections throughout the process also increase production efficiency, avoid unnecessary costs and help build sustainable production systems.',
-  hiz5Ad: 'Technical Textile Consulting',
-  hiz5Ozet: 'End-to-end consulting from material selection to production technique and performance criteria.',
-  hiz5P1: 'With our deep know-how in technical textiles and more than 30 years of field experience, we offer end-to-end consulting. From project start to the finished product, we provide professional support in choosing the right materials, defining production techniques and setting performance criteria.',
-  hiz5P2: 'Technical textiles demand critical properties such as durability, protection, functionality and performance, so we take an engineering approach on every project. Developing tailored solutions in defence, medical, industrial and sports textiles, we deliver maximum efficiency and long service life.',
-  hiz6Ad: 'Functional Textile Applications',
-  hiz6Ozet: 'User-focused solutions for fashion, workwear, transport, construction, sports and medical textiles.',
-  hiz6P1: 'Antra Tech offers functional textile solutions not only in defence and technical textiles but also in many areas of everyday life. We develop solutions for fashion, workwear, transport, construction, sports and medical textiles, putting user needs first.',
-  hiz6P2: 'Bringing together durability, comfort, safety and aesthetics according to each sector’s specific needs, we create high-performance products. Especially for textiles used where occupational safety matters, we make user health and safety the priority.',
-  hiz6P3: 'With our functional textile approach, we develop products that are not only aesthetic but also fully fit for purpose.',
-
-  surUst: 'Integrated process',
-  
-  
-  surTuvalEtiket: 'Textile production line animation: fibre, yarn, warping, weaving, dyeing and finishing, laboratory testing, quality control and shipment',
-  surSayacEtiket: 'Process step',
-  surAdim: 'Step',
-  adim1Ad: 'Raw material intake',
-  adim1Metin: 'Fibre bales are sampled; fineness, length and moisture are recorded.',
-  adim2Ad: 'Yarn',
-  adim2Metin: 'Fibres are carded, drafted and twisted into yarn; count and twist are measured.',
-  adim3Ad: 'Warping',
-  adim3Metin: 'Hundreds of ends are laid side by side at even tension and wound onto the warp beam.',
-  adim4Ad: 'Weaving',
-  adim4Metin: 'Heddles open the shed, the weft passes, the reed beats up: the fabric forms pick by pick.',
-  adim5Ad: 'Dyeing and finishing',
-  adim5Metin: 'Greige fabric is dyed, the dye is fixed, and a functional finish is applied for its end use.',
-  adim6Ad: 'Laboratory testing',
-  adim6Metin: 'Samples go through tensile, tear, abrasion and fastness tests; results are reported.',
-  adim7Ad: 'Quality control',
-  adim7Metin: 'The fabric is inspected metre by metre on a lit inspection table; defects are marked.',
-  adim8Ad: 'Shipment',
-  adim8Metin: 'Approved rolls are labelled, packed and shipped with full traceability.',
-
-  labUst: 'Laboratory testing and analysis',
-  
-  labAciklama: 'All tests are carried out step by step, reported and, when needed, [[verified a second time at independent laboratories]].',
-  labSekmeEtiket: 'Tests performed',
-  labTuvalEtiket: 'Test animation',
-  test1: 'Tear and breaking strength',
-  test2: 'Rubbing and abrasion resistance',
-  test3: 'Light and perspiration fastness',
-  test4: 'Air and vapour permeability',
-  test5: 'Flame and chemical resistance',
-  test6: 'Fabric inspection',
-  labOlculen: 'Measured',
-  labNot: 'Values are examples; acceptance limits are set per product and standard.',
-  
-  
-
-  atoUst: 'Weave and pattern design',
-  atoBaslik: 'We can produce fabric in the weave and pattern you need',
-  atoAciklama: 'Pick a standard weave or draw your own repeat on the point paper and see right away whether it can be woven. If the design you have in mind is not here, describe it and let us talk through the details.',
-  atoHazir: 'Preset weaves',
-  orgu1: 'Plain weave', orgu2: '2/1 twill', orgu3: '2/2 twill', orgu4: '5‑end satin', orgu5: '2/2 panama',
-  atoOnizleme: 'Preview of the fabric woven with the drawn weave',
-  atoKagit: 'Point paper',
-  atoYardim: 'Move between squares with the arrow keys; press Space or Enter to flip a square.',
-  atoArmur: 'Loom suitability', atoArmurEtiket: 'Draft and lifting plan of the drawn weave',
-  atoTemizle: 'Start from a blank paper',
-  atoDanis: 'Describe your design',
-  vizUst: 'Our vision',
-  viz1: '[[Engineering]] in every thread,',
-  viz2: '[[trust]] in every fabric,',
-  viz3: '[[sustainability]] in every process.',
-  vizMetin: 'At Antra Tech we believe in redefining the future of textiles. Beyond being a brand that stands for trust and quality in critical sectors from the defence industry to public institutions, we want to shape the future with sustainable and innovative production systems. Our vision is to build the future of technical textiles today — starting in Türkiye and growing to a regional and global scale.',
-  misBaslik: 'Our mission',
-  mis1: 'To provide our clients with engineering support at every stage of production and deliver sustainable, reliable textile solutions with high quality standards.',
-  mis2: 'To create value in national and international projects by combining R&D, innovation and field experience.',
-
-  galUst: 'Photo gallery',
-  galBaslik: 'Frames from our work',
-  fotoEtiket: 'Photo',
-  kare1: 'Colour cabinet',
-  kare2: 'Colour card',
-  kare3: 'Tensile test',
-  kare4: 'Sample tag',
-  kare5: 'Sample table',
-  kare6: 'Samples',
-  gal1: 'Two technicians compare navy fabric samples under standard light in a colour assessment cabinet.',
-  gal2: 'A colour card strip in dark blue shades lying on navy fabric.',
-  gal3: 'A red fabric strip in a tensile tester; beside it a screen showing the force curve.',
-  gal4: 'Purple-navy fabric samples with trimmed edges, labelled with a plastic tie.',
-  gal5: 'Navy fabric samples lined up on a laboratory table next to the colour cabinet.',
-  gal6: 'Stacked fabric samples; one carries a blue plastic tag.',
-  onceki: 'Previous',
-  sonraki: 'Next',
-  kapat: 'Close',
-
-  iletUst: 'Get in touch',
-  iletBaslik: 'Ready to work together?',
-  kanalTel: 'Customer support',
-  kanalEposta: 'Email',
-  kanalWa: 'Send a message',
-  kanalAdres: 'Address · directions',
-  saatHaftaici: 'Weekdays',
-  saatCumartesi: 'Saturday',
-  saatPazar: 'Sunday',
-  saatKapali: 'Closed',
-  formBaslik: 'Message tag',
-  formKonu: 'Subject',
-  konu1: 'Call me',
-  konu2: 'Request information',
-  konu3: 'Complaint or suggestion',
-  konu4: 'Other',
-  formAd: 'Full name',
-  formTel: 'Phone',
-  formEposta: 'Email',
-  istegeBagli: '(optional)',
-  formMesaj: 'Your message',
-  formGonder: 'Send',
-  formKopyala: 'Copy message',
-  formMuhur: 'Ready',
-  formNot: 'When you press Send, your message opens in your email app, ready to send; if you leave your phone number, we will call you back.',
-  ikBaslik: 'Careers',
-  ikMetin: 'To join our team, send your CV to',
-  ikMetin2: '.',
-  pencereCta: 'Ask about this service',
-  oncekiHizmet: 'Previous service',
-  sonrakiHizmet: 'Next service',
-
-  jakarEtiket: 'The words ANTRA TECH woven into the fabric itself as a jacquard',
-  altMenuBaslik: 'Page',
-  altSaatBaslik: 'Opening hours',
-  hizliEtiket: 'Quick contact',
-  hizliAra: 'Call now',
-  altMetin: 'Engineering and production support in technical textiles and production control.',
-  altAdres: 'Çorlu, Tekirdağ / Türkiye',
-  basaDon: 'Back to top',
-};
+export const DILLER = ['tr', 'en', 'ru', 'de', 'ar'];
+/* menüde dilin kendi adıyla; yerel ayar sayı biçimi için (Arapçada rakamlar Latin: ölçü değerleri teknik belgelerdeki gibi) */
+export const DIL_AD = { tr: 'Türkçe', en: 'English', ru: 'Русский', de: 'Deutsch', ar: 'العربية' };
+const YEREL = { tr: 'tr-TR', en: 'en-GB', ru: 'ru-RU', de: 'de-DE', ar: 'ar-u-nu-latn' };
+const YON = { tr: 'ltr', en: 'ltr', ru: 'ltr', de: 'ltr', ar: 'rtl' };
 
 /* Yalnız JS'in kullandığı metinler */
 export const JS = {
   tr: {
     menuKapat: 'Menüyü kapat',
-    dilEtiket: 'Dil: Türkçe. İngilizceye geç',
+    dilEtiket: 'Dil: Türkçe. Dil listesini aç',
+    dilListe: 'Dil seçimi',
+    sayfaBaslik: 'Antra Tech — Teknik Tekstil ve Üretim Kontrolü',
+    sayfaAciklama: 'Antra Tech; teknik tekstil, savunma tekstilleri, üretim kontrolü ve laboratuvar testlerinde 30 yılı aşkın tecrübeye sahip mühendislik firması. Çorlu, Tekirdağ.',
     simdiAcik: 'Şu an açığız · {saat}’{e} kadar',
     simdiKapali: 'Şu an kapalıyız · {gun} {saat}’{de} açılıyoruz',
     gunBugun: 'bugün', gunYarin: 'yarın', gunPazar: 'pazar', gunPazartesi: 'pazartesi', gunSali: 'salı', gunCarsamba: 'çarşamba', gunPersembe: 'perşembe', gunCuma: 'cuma', gunCumartesi: 'cumartesi',
@@ -272,6 +44,8 @@ export const JS = {
     lab4Olcum: 'Sıklık {s} tel/cm · geçirgenlik {g}',
     lab4Surgu: 'Kumaş sıklığı',
     lab5Olcum: 'Alev {s} s · hasar boyu {h} mm',
+    panel1Baslik: 'Kuvvet – uzama', panelUzama: 'uzama', panelKopma: 'KOPMA', panelDevir: 'devir', panelTuylenme: 'TÜYLENME DERECESİ', panel3Baslik: 'Mavi yün 1–8', panelSaat: 'saat pozlama', panelGriSkala: 'GRİ SKALA', panel4Baslik: 'Hava geçirgenliği', panelTelCm: 'tel/cm', panelGecirgenlik: 'GEÇİRGENLİK', panel5Baslik: 'Hasar boyu', panelAlev: 'alev', panelAlevVar: 'ALEV VAR', panelKorSifir: 'KOR SÜRESİ 0 s',
+    lab3Ksenon: 'KSENON', lab3Ortulu: 'örtülü', lab3Pozlanan: 'pozlanan', lab3MaviYun: 'MAVİ YÜN 1–8', lab3Serit: 'ÇOK LİFLİ ŞERİT · TER', lab5Damla: 'KİMYASAL DAMLA',
     test6Metin: 'Kumaş ışıklı muayene masasında metre metre akar; muayeneci her hatayı boyuna göre 1–4 puanla işaretler (4 puan sistemi). Toplam puan 100 m²’ye oranlanır; kabul sınırını alıcı ile üretici birlikte belirler.',
     lab6Olcum: '{i} hata · {p} puan · {m} m muayene · 100 m²’de {o} puan',
     lab6Cizgi: 'muayene çizgisi',
@@ -310,73 +84,18 @@ export const JS = {
     atolyeIpucu: 'Desen fikrinizi, kullanım alanını ve yaklaşık miktarı yazın; detayları birlikte konuşalım.',
     atolyeHucreCozgu: 'Satır {s}, sütun {k}: çözgü üstte', atolyeHucreAtki: 'Satır {s}, sütun {k}: atkı üstte',
   },
-  en: {
-    menuKapat: 'Close menu',
-    dilEtiket: 'Language: English. Switch to Turkish',
-    simdiAcik: 'Open now · until {saat}',
-    simdiKapali: 'Closed now · opens {gun} at {saat}',
-    gunBugun: 'today', gunYarin: 'tomorrow', gunPazar: 'Sunday', gunPazartesi: 'Monday', gunSali: 'Tuesday', gunCarsamba: 'Wednesday', gunPersembe: 'Thursday', gunCuma: 'Friday', gunCumartesi: 'Saturday',
-    formEksik: 'Please enter your name and your message.',
-    formEpostaHatali: 'The email address looks incomplete — could you check it?',
-    formHazir: 'Your message is open in your email app. If it did not open, write to info@antratech.net.',
-    formKopyalandi: 'Message copied: paste it into your webmail and send it to info@antratech.net.',
-    formKopyalanamadi: 'Could not copy; select the text in the message field and copy it.',
-    formOnDoldur: 'Hello, I would like information about your "{hizmet}" service.',
-    test1Metin: 'The sample is pulled between two jaws at constant speed; force and elongation at break are recorded. The force–elongation curve shows how much load the fabric carries and how far it stretches.',
-    test2Metin: 'The sample rubs for thousands of cycles under a head that traces a Lissajous figure. The number of cycles until a yarn breaks or pilling appears gives the abrasion resistance.',
-    test3Metin: 'The sample and blue wool references are exposed together to artificial daylight; fading is rated on the grey scale. For perspiration fastness the sample is brought into contact with artificial perspiration.',
-    test4Metin: 'A constant pressure difference is applied across the fabric; the air or water vapour passing through a unit area is measured. The denser the weave, the lower the permeability.',
-    test5Metin: 'A flame is applied to a vertically held sample for a set time; after-flame, after-glow and damaged length are measured. For chemical resistance the sample is exposed to agents and tested again.',
-    lab1Olcum: 'Force {f} N · elongation {e}%',
-    lab1Kopma: 'Break: {f} N · {e}%',
-    lab2Olcum: 'Cycles {n}',
-    lab3Olcum: 'Exposure {s} h · fading grade {d}',
-    lab4Olcum: 'Thread density {s} threads/cm · permeability {g}',
-    lab4Surgu: 'Thread density',
-    lab5Olcum: 'Flame {s} s · damaged length {h} mm',
-    test6Metin: 'The fabric runs metre by metre over the lit inspection table; the inspector marks each defect with 1–4 points by length (4-point system). The total is normalised to 100 m²; the acceptance limit is agreed between buyer and producer.',
-    lab6Olcum: '{i} defects · {p} points · {m} m inspected · {o} points per 100 m²',
-    lab6Cizgi: 'inspection line',
-    lab6Anahtar: '4 POINTS · DEFECT LENGTH',
-    lab6Kayit: 'INSPECTION LOG',
-    lab6Oran: 'POINTS PER 100 m²',
-    lab6Tur_atki: 'Missing pick',
-    lab6Tur_leke: 'Stain',
-    lab6Tur_dugum: 'Knot',
-    lab6Tur_delik: 'Hole',
-    lab6TuvalEtiket: 'Fabric inspection: defects are marked with 1–4 points by length at the inspection line',
-    adimaGit: 'Step {n}: {ad} — go to this station',
-    olculen1: 'Breaking force (N)|Elongation at break (%)|Force–elongation curve|Tear force (N)',
-    olculen2: 'Cycle count|Mass loss|Pilling grade|Change in appearance',
-    olculen3: 'Colour change (grey scale)|Staining|Exposure time|Blue wool reference',
-    olculen4: 'Air permeability|Water vapour permeability|Pressure difference|Thread density',
-    olculen5: 'After-flame time (s)|After-glow time (s)|Damaged length (mm)|Retest after chemical exposure',
-    olculen6: 'Defect type|Defect length → points|Points per 100 m²|Acceptance limit (contract)',
-    zemin0: '2/1 twill ground, 5‑end satin figure', zemin1: 'Plain-weave ground, 5‑end satin figure', zemin2: '2/2 panama ground, 5‑end satin figure',
-    kontrol1: 'Check: fibre fineness · moisture', kontrol2: 'Check: count · twist', kontrol3: 'Check: end tension',
-    kontrol4: 'Check: thread density · weave', kontrol5: 'Check: shade · fastness', kontrol6: 'Check: strength · report',
-    kontrol7: 'Check: defect marking', kontrol8: 'Check: labels · traceability',
-    atolyeYuz: 'Warp on face', atolyeCozguYuzlu: 'warp-faced', atolyeAtkiYuzlu: 'weft-faced', atolyeDengeli: 'balanced',
-    atolyeAtlama: 'Longest float (warp / weft)', atolyeRapor: 'Repeat',
-    atolyeBagsiz: 'Not producible: a warp or weft never changes side, so it is not bound into the fabric.',
-    atolyeUzun: 'Note: floats over 5 or more yarns snag easily and lower abrasion resistance.',
-    atolyeTamam: 'Ready for production: every yarn is bound, floats are short.',
-    hizmetFoto_savunma: 'A soldier in a camouflage uniform wearing a helmet and breathing mask.',
-    hizmetFoto_laboratuvar: 'An engineer placing a navy fabric specimen between the grips of a tensile tester in the laboratory.',
-    hizmetFoto_kontrol: 'Two quality inspectors reviewing data on a tablet next to a roll of camouflage fabric.',
-    hizmetFoto_entegre: 'A technician in a lab coat inspecting fabric on a production line, with fabric rolls in front and a monitoring screen behind.',
-    hizmetFoto_danismanlik: 'A team of three working over camouflage fabric and technical drawings on a table.',
-    atolyeCerceve: '{n} shafts',
-    atolyeTezgah: 'Weaves on a dobby loom with {n} shafts. Plan: draft above, lifting order on the right.',
-    atolyeTezgahYok: 'Cannot be woven until the unbound yarn is fixed.',
-    atolyeIpucu: 'Describe your design idea, its end use and the rough quantity; we will talk through the details.',
-    atolyeHucreCozgu: 'Row {s}, column {k}: warp up', atolyeHucreAtki: 'Row {s}, column {k}: weft up',
-  },
 };
 
 let dil = 'tr';
 const TR = {};          /* HTML'den okunan Türkçe */
 let kuruldu = false;
+/* EN / RU / DE / AR yalnız seçilince indirilir (dil/*.mjs: SAYFA + JS); açılış paketinde yalnız Türkçe (açılış JS ≤ 72 kB) */
+const SOZ = {};
+const yukleniyor = {};
+function sozlukYukle(d) {
+  if (d === 'tr' || SOZ[d]) return Promise.resolve();
+  return (yukleniyor[d] ??= import(`./dil/${d}.mjs`).then((m) => { SOZ[d] = m; }));
+}
 
 /* vurgulu metin: HTML'deki <em class="vurgu"> çeviride [[…]] olarak taşınır */
 const vurguOku = (el) => [...el.childNodes].map((d) => (d.nodeType === 1 && d.matches('em.vurgu') ? `[[${d.textContent}]]` : d.textContent)).join('');
@@ -393,54 +112,92 @@ function trOku() {
   for (const el of document.querySelectorAll('[data-i18n-alt]')) { const k = el.dataset.i18nAlt; if (!(k in TR)) TR[k] = el.getAttribute('alt'); }
 }
 
+/* sırası: seçili dilin JS + sayfa metni → İngilizce → Türkçe (eksik anahtar boş görünmez; doğrulayıcı eksiği yakalar) */
 export function metin(anahtar) {
-  if (dil === 'en') return JS.en[anahtar] ?? EN[anahtar] ?? JS.tr[anahtar] ?? TR[anahtar] ?? anahtar;
-  return JS.tr[anahtar] ?? TR[anahtar] ?? anahtar;
+  if (dil === 'tr') return JS.tr[anahtar] ?? TR[anahtar] ?? anahtar;
+  const s = SOZ[dil];
+  const e = SOZ.en;
+  return s?.JS[anahtar] ?? s?.SAYFA[anahtar] ?? e?.JS[anahtar] ?? e?.SAYFA[anahtar] ?? JS.tr[anahtar] ?? TR[anahtar] ?? anahtar;
 }
 export const etkinDil = () => dil;
+/* biçimler: sayı yerel ayarla, yüzde işareti dilin yerinde (TR %20 · EN 20% · DE/RU 20 % · AR 20%), büyük harf dilin kuralıyla */
+export const sayi = (n, b = 0) => n.toLocaleString(YEREL[dil], { minimumFractionDigits: b, maximumFractionDigits: b });
+export const yuzde = (n) => (dil === 'tr' ? `%${n}` : dil === 'de' || dil === 'ru' ? `${n} %` : `${n}%`);
+export const buyuk = (s) => (dil === 'ar' ? s : s.toLocaleUpperCase(dil));
 
-export function dilUygula(yeni) {
+export async function dilUygula(yeni) {
   if (!kuruldu) { trOku(); kuruldu = true; }
-  dil = DILLER.includes(yeni) ? yeni : 'tr';
-  document.documentElement.lang = dil;
+  const hedef = DILLER.includes(yeni) ? yeni : 'tr';
+  try { await sozlukYukle(hedef); } catch { /* dosya inmezse Türkçe kalır */ return; }
+  dil = hedef;
+  const h = document.documentElement;
+  h.lang = dil; h.dir = YON[dil];
   for (const el of document.querySelectorAll('[data-i18n]')) metinYaz(el, metin(el.dataset.i18n));
   for (const el of document.querySelectorAll('[data-i18n-aria]')) el.setAttribute('aria-label', metin(el.dataset.i18nAria));
   for (const el of document.querySelectorAll('[data-i18n-alt]')) el.setAttribute('alt', metin(el.dataset.i18nAlt));
-  document.title = dil === 'en' ? 'Antra Tech — Technical Textiles and Production Control' : 'Antra Tech — Teknik Tekstil ve Üretim Kontrolü';
-  /* açıklama etiketi de dille değişir; Türkçesi ilk açılışta HTML'den saklanır */
+  document.title = metin('sayfaBaslik');
   const aciklama = document.querySelector('meta[name="description"]');
-  if (aciklama) {
-    aciklama.dataset.tr ??= aciklama.content;
-    aciklama.content = dil === 'en' ? 'Engineering and production support in technical and defence textiles, production control and laboratory testing, with 30+ years of experience. Çorlu, Türkiye.' : aciklama.dataset.tr;
-  }
+  if (aciklama) aciklama.content = metin('sayfaAciklama');
   document.dispatchEvent(new CustomEvent('dil-degisti', { detail: dil }));
 }
 
-export function dilKur({ dugme }) {
+/* tarayıcı dili: navigator.languages sırasıyla ilk desteklenen; yoksa İngilizce. Bot hep Türkçe (kanonik adres dizine başka dilde girmesin) */
+function tarayiciDili() {
+  if (/bot|crawl|spider|slurp/i.test(navigator.userAgent)) return 'tr';
+  for (const l of navigator.languages?.length ? navigator.languages : [navigator.language || 'tr']) { const k = l.slice(0, 2).toLowerCase(); if (DILLER.includes(k)) return k; }
+  return 'en';
+}
+
+/* dil menüsü: açılır liste (açma/kapama düğmesi + seçenek düğmeleri); Esc ve dışarı tıklama kapatır, seçim adrese ?dil= yazar */
+export async function dilKur({ dugme, liste }) {
   trOku(); kuruldu = true;
   const prm = new URLSearchParams(location.search).get('dil');
   let kayitli = null;
   try { kayitli = localStorage.getItem('antratech-dil'); } catch { /* gizli pencere */ }
-  /* arama motoru botu tarayıcı diline göre çevrilmez: kanonik Türkçe adres dizine İngilizce girmesin (İngilizce sürüm ?dil=en) */
-  const bot = /bot|crawl|spider|slurp/i.test(navigator.userAgent);
-  const tarayici = bot || (navigator.language || 'tr').toLowerCase().startsWith('tr') ? 'tr' : 'en';
-  const ilk = DILLER.includes(prm) ? prm : DILLER.includes(kayitli) ? kayitli : tarayici;
-  const dugmeGuncelle = () => { dugme.dataset.dil = dil; dugme.setAttribute('aria-label', metin('dilEtiket')); };
-  if (ilk !== 'tr') dilUygula(ilk);
+  const ilk = DILLER.includes(prm) ? prm : DILLER.includes(kayitli) ? kayitli : tarayiciDili();
+  const kod = dugme.querySelector('.dil__kod');
+  const guncelle = () => {
+    kod.textContent = dil.toUpperCase();
+    dugme.setAttribute('aria-label', metin('dilEtiket'));
+    liste.setAttribute('aria-label', metin('dilListe'));
+    for (const b of liste.querySelectorAll('[data-dil]')) { if (b.dataset.dil === dil) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); }
+  };
+  const ac = (acik) => { dugme.setAttribute('aria-expanded', String(acik)); liste.hidden = !acik; };
+  if (ilk !== 'tr') await dilUygula(ilk);
   kanonikYaz();
   document.documentElement.classList.remove('dil-bekle');
-  dugmeGuncelle();
+  guncelle();
   dugme.addEventListener('click', () => {
-    dilUygula(dil === 'tr' ? 'en' : 'tr');
-    dugmeGuncelle();
+    const acik = dugme.getAttribute('aria-expanded') !== 'true';
+    ac(acik);
+    if (acik) (liste.querySelector('[aria-current]') || liste.querySelector('[data-dil]')).focus();
+  });
+  liste.addEventListener('click', async (e) => {
+    const b = e.target.closest('[data-dil]'); if (!b) return;
+    ac(false); dugme.focus();
+    if (b.dataset.dil === dil) return;
+    await dilUygula(b.dataset.dil);
+    guncelle();
     try { localStorage.setItem('antratech-dil', dil); } catch { /* yok say */ }
     const u = new URL(location.href); u.searchParams.set('dil', dil); history.replaceState(null, '', u);
     kanonikYaz();
   });
+  /* önden indirme: seçeneğin üzerine gelinince ya da odaklanınca sözlük iner, tıklamada çoğunlukla hazırdır (Doherty) */
+  const onden = (e) => { const b = e.target.closest?.('[data-dil]'); if (b) sozlukYukle(b.dataset.dil).catch(() => {}); };
+  liste.addEventListener('pointerover', onden); liste.addEventListener('focusin', onden);
+  /* ok tuşları seçenekler arasında gezer; Esc kapatır ve odağı düğmeye döndürür */
+  liste.addEventListener('keydown', (e) => {
+    const s = [...liste.querySelectorAll('[data-dil]')], i = s.indexOf(document.activeElement);
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); s[(i + (e.key === 'ArrowDown' ? 1 : s.length - 1)) % s.length].focus(); }
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !liste.hidden) { ac(false); dugme.focus(); } });
+  document.addEventListener('pointerdown', (e) => { if (!liste.hidden && !liste.contains(e.target) && !dugme.contains(e.target)) ac(false); });
+  liste.addEventListener('focusout', (e) => { if (!liste.hidden && !liste.contains(e.relatedTarget) && e.relatedTarget !== dugme) ac(false); });
 }
 
-/* kanonik adres gösterilen dile değil adrese bağlı: ?dil=en kendini, geri kalan her şey Türkçe kökü gösterir (hreflang ile çelişmez) */
+/* kanonik adres gösterilen dile değil adrese bağlı: ?dil=xx (tr dışı) kendini, geri kalan her şey Türkçe kökü gösterir (hreflang ile çelişmez) */
 function kanonikYaz() {
   const bag = document.querySelector('link[rel="canonical"]');
-  if (bag) bag.href = new URLSearchParams(location.search).get('dil') === 'en' ? 'https://www.antratech.net/?dil=en' : 'https://www.antratech.net/';
+  const p = new URLSearchParams(location.search).get('dil');
+  if (bag) bag.href = DILLER.includes(p) && p !== 'tr' ? `https://www.antratech.net/?dil=${p}` : 'https://www.antratech.net/';
 }

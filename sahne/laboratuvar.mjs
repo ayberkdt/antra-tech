@@ -9,7 +9,7 @@
  * Değerler örnektir (sayfada yazılı). Ölçüm satırı 8 Hz'de güncellenir; ekran okuyucuya
  * yalnız test değişince duyurulur. Saf modeller dışa açık; araclar/dogrula.mjs sınar.
  */
-import { metin, etkinDil } from '../ceviri.mjs';
+import { metin, sayi, yuzde, buyuk } from '../ceviri.mjs';
 import { cekmeEgrisi, KOPMA } from './surec-ortak.mjs';
 import { muayeneKur } from './muayene.mjs';
 import { donanimGpu } from './gpu.mjs';
@@ -78,7 +78,6 @@ export function labKur({ kok, azHareket }) {
   const lw = (px) => px / olcek;
   const kutu = (x, y, g, h, dolgu = R.zemin2, renk = R.ciz) => { ctx.fillStyle = dolgu; ctx.fillRect(x, y, g, h); ctx.strokeStyle = renk; ctx.lineWidth = lw(1.4); ctx.strokeRect(x, y, g, h); };
   const yazi = (s, x, y, renk = R.ince, boy = 11, hiza = 'left') => { ctx.fillStyle = renk; ctx.font = `500 ${lw(boy)}px "JetBrains Mono", monospace`; ctx.textAlign = hiza; ctx.fillText(s, x, y); };
-  const sayi = (n, b = 0) => n.toLocaleString(etkinDil() === 'en' ? 'en-GB' : 'tr-TR', { minimumFractionDigits: b, maximumFractionDigits: b });
 
   /* ── T1 çekme ─────────────────────────────────────────────── */
   const CEKME_SURE = 6, FMAX = 1180, EMAX = 31;
@@ -148,7 +147,7 @@ export function labKur({ kok, azHareket }) {
       ctx.setLineDash([lw(3), lw(3)]); ctx.strokeStyle = 'rgba(243, 238, 228, .55)'; ctx.lineWidth = lw(1);
       ctx.beginPath(); ctx.moveTo(imlec.x, gy); ctx.lineTo(imlec.x, ay); ctx.lineTo(gx, ay); ctx.stroke(); ctx.setLineDash([]);
       ctx.fillStyle = R.krem; ctx.beginPath(); ctx.arc(imlec.x, ay, lw(4), 0, Math.PI * 2); ctx.fill();
-      const etiket = `${sayi(cekmeEgrisi(s) * FMAX)} N · ${etkinDil() === 'en' ? '' : '%'}${sayi(s * EMAX, 1)}${etkinDil() === 'en' ? '%' : ''}`;
+      const etiket = `${sayi(cekmeEgrisi(s) * FMAX)} N · ${yuzde(sayi(s * EMAX, 1))}`;
       ctx.font = `600 ${lw(12)}px "JetBrains Mono", monospace`;
       const g = ctx.measureText(etiket).width + lw(14);
       const ex = Math.min(imlec.x + lw(10), gx + gw + 10 - g), ey = ay - lw(30);
@@ -210,7 +209,7 @@ export function labKur({ kok, azHareket }) {
     kutu(610, 230, 150, 180);
     yazi('MARTINDALE', 685, 262, R.ince, 10, 'center');
     ctx.fillStyle = R.krem; ctx.font = `300 ${lw(34)}px Fraunces, Georgia, serif`; ctx.textAlign = 'center'; if (tazele || azHareket) devirG = devir; ctx.fillText(sayi(devirG), 685, 330);
-    yazi(metin('lab2Olcum').split(' ')[0].toLocaleUpperCase(etkinDil() === 'en' ? 'en' : 'tr'), 685, 360, R.ince, 10, 'center');
+    yazi(buyuk(metin('lab2Olcum').split(' ')[0]), 685, 360, R.ince, 10, 'center');
     ctx.fillStyle = R.kirmizi; ctx.fillRect(630, 384, 110 * oran, 4); ctx.strokeStyle = R.ince; ctx.lineWidth = lw(1); ctx.strokeRect(630, 384, 110, 4);
     return metin('lab2Olcum').replace('{n}', sayi(devirG));
   }
@@ -225,7 +224,7 @@ export function labKur({ kok, azHareket }) {
       ctx.strokeStyle = `rgba(243, 238, 228, ${0.08 + 0.06 * Math.sin(t * 6 + i)})`; ctx.lineWidth = lw(10);
       ctx.beginPath(); ctx.moveTo(x, 96); ctx.lineTo(x + (i - 4) * 14, 300); ctx.stroke();
     }
-    yazi(etkinDil() === 'en' ? 'XENON' : 'KSENON', 400, 72, R.ince, 11, 'center');
+    yazi(metin('lab3Ksenon'), 400, 72, R.ince, 11, 'center');
     /* numune: üst yarısı örtülü */
     const nx = 120, ny = 300, ng = 260, nh = 150;
     const kayip = solma(poz, 4);
@@ -240,11 +239,11 @@ export function labKur({ kok, azHareket }) {
     ctx.restore();
     ctx.strokeStyle = R.ciz; ctx.lineWidth = lw(1.4); ctx.strokeRect(nx, ny, ng, nh);
     ctx.setLineDash([lw(4), lw(4)]); ctx.beginPath(); ctx.moveTo(nx + ng / 2, ny); ctx.lineTo(nx + ng / 2, ny + nh); ctx.stroke(); ctx.setLineDash([]);
-    yazi(etkinDil() === 'en' ? 'masked' : 'örtülü', nx + ng / 4, ny + nh + 22, R.ince, 10, 'center');
-    yazi(etkinDil() === 'en' ? 'exposed' : 'pozlanan', nx + ng * 3 / 4, ny + nh + 22, R.ince, 10, 'center');
+    yazi(metin('lab3Ortulu'), nx + ng / 4, ny + nh + 22, R.ince, 10, 'center');
+    yazi(metin('lab3Pozlanan'), nx + ng * 3 / 4, ny + nh + 22, R.ince, 10, 'center');
     /* mavi yün referansları 1–8 */
     const rx = 440, ry = 300;
-    yazi(etkinDil() === 'en' ? 'BLUE WOOL 1–8' : 'MAVİ YÜN 1–8', rx, ry - 14, R.ince, 10);
+    yazi(metin('lab3MaviYun'), rx, ry - 14, R.ince, 10);
     for (let d = 1; d <= 8; d++) {
       const k = solma(poz, d);
       const x = rx + (d - 1) * 38;
@@ -260,7 +259,7 @@ export function labKur({ kok, azHareket }) {
     /* ter haslığı: çok lifli refakat şeridi (asetat, pamuk, poliamid, poliester, akrilik, yün) numuneden boya alır */
     const LIF = ['CA', 'CO', 'PA', 'PES', 'PAC', 'WO'];
     const AL = [0.55, 0.35, 0.9, 0.2, 0.3, 0.7];          /* temsilî boya alma eğilimi */
-    yazi(etkinDil() === 'en' ? 'MULTIFIBRE · PERSPIRATION' : 'ÇOK LİFLİ ŞERİT · TER', 470, 512, R.ince, 10);
+    yazi(metin('lab3Serit'), 470, 512, R.ince, 10);
     LIF.forEach((l, i) => {
       const k = Math.min(1, poz * AL[i]) * 0.6;
       const x = 470 + i * 46;
@@ -322,8 +321,8 @@ export function labKur({ kok, azHareket }) {
     /* gösterge */
     ctx.fillStyle = R.kirmizi; ctx.fillRect(60, 560, 680 * Math.min(1, gecis * 1.25), 6);
     ctx.strokeStyle = R.ince; ctx.lineWidth = lw(1); ctx.strokeRect(60, 560, 680, 6);
-    const yuzde = sayi(gecis * 100, 0);
-    return metin('lab4Olcum').replace('{s}', String(siklik)).replace('{g}', etkinDil() === 'en' ? `${yuzde}%` : `%${yuzde}`);
+    const oranYuzde = sayi(gecis * 100, 0);   /* ad: içe aktarılan yuzde() gölgelenmesin */
+    return metin('lab4Olcum').replace('{s}', String(siklik)).replace('{g}', yuzde(oranYuzde));
   }
 
   /* ── T5 yanmazlık ─────────────────────────────────────────── */
@@ -375,7 +374,7 @@ export function labKur({ kok, azHareket }) {
     yazi('mm', rx + 18, ny + nh - 310, R.ince, 9);
     /* kimyasal dayanım iç paneli: damla numuneye düşer, boncuklanır, ajan izi kalır (temsilî) */
     const kx = 610, ky = 300, kg = 150, kh = 90;
-    yazi(etkinDil() === 'en' ? 'CHEMICAL DROP' : 'KİMYASAL DAMLA', kx, ky - 96, R.ince, 10);
+    yazi(metin('lab5Damla'), kx, ky - 96, R.ince, 10);
     ctx.fillStyle = R.laci; ctx.fillRect(kx, ky, kg, kh);
     ctx.strokeStyle = R.ciz; ctx.lineWidth = lw(1.2); ctx.strokeRect(kx, ky, kg, kh);
     const df = azHareket ? 0.9 : (t / SURE) % 1;

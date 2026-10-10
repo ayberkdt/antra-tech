@@ -9,6 +9,9 @@
 <link rel="canonical" href="https://www.antratech.net/">
 <link rel="alternate" hreflang="tr" href="https://www.antratech.net/">
 <link rel="alternate" hreflang="en" href="https://www.antratech.net/?dil=en">
+<link rel="alternate" hreflang="ru" href="https://www.antratech.net/?dil=ru">
+<link rel="alternate" hreflang="de" href="https://www.antratech.net/?dil=de">
+<link rel="alternate" hreflang="ar" href="https://www.antratech.net/?dil=ar">
 <link rel="alternate" hreflang="x-default" href="https://www.antratech.net/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Antra Tech — Teknik Tekstil ve Üretim Kontrolü">
@@ -24,7 +27,7 @@
 <link rel="icon" href="gorseller/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="gorseller/apple-touch-icon.png">
 <link rel="preload" href="yazitipleri/archivo/archivo.woff2" as="font" type="font/woff2" crossorigin>
-<script>(function(){var h=document.documentElement;if(location.protocol==='file:')return;h.classList.add('js');try{var p=new URLSearchParams(location.search).get('dil'),k=null;try{k=localStorage.getItem('antratech-dil')}catch(e){}var n=(/bot|crawl|spider|slurp/i.test(navigator.userAgent)||(navigator.language||'tr').toLowerCase().indexOf('tr')===0)?'tr':'en',d=(p==='tr'||p==='en')?p:((k==='tr'||k==='en')?k:n);if(d!=='tr'){h.classList.add('dil-bekle');setTimeout(function(){h.classList.remove('dil-bekle')},1500)}}catch(e){}})()</script>
+<script>(function(){var h=document.documentElement;if(location.protocol==='file:')return;h.classList.add('js');try{var L=['tr','en','ru','de','ar'],p=new URLSearchParams(location.search).get('dil'),k=null;try{k=localStorage.getItem('antratech-dil')}catch(e){}var n='en';if(/bot|crawl|spider|slurp/i.test(navigator.userAgent))n='tr';else{var ls=navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||'tr'];for(var i=0;i!==ls.length;i++){var c=String(ls[i]).slice(0,2).toLowerCase();if(L.indexOf(c)>-1){n=c;break}}}var d=L.indexOf(p)>-1?p:(L.indexOf(k)>-1?k:n);if(d!=='tr'){h.classList.add('dil-bekle');if(d==='ar')h.dir='rtl';setTimeout(function(){h.classList.remove('dil-bekle')},1500)}}catch(e){}})()</script>
 <link rel="stylesheet" href="site.css" fetchpriority="high">
 <script type="module" src="site.mjs"></script>
 <script type="application/ld+json">
@@ -52,9 +55,20 @@
       </ul>
     </nav>
     <div class="ust__sag">
-      <button class="dil" type="button" id="dil-dugme" aria-label="Dil: Türkçe. İngilizceye geç" data-dil="tr">
-        <span class="dil__kod" aria-hidden="true">TR</span><span class="dil__ayrac" aria-hidden="true">/</span><span class="dil__kod" aria-hidden="true">EN</span>
-      </button>
+      <div class="dil-secim">
+        <button class="dil" type="button" id="dil-dugme" aria-expanded="false" aria-controls="dil-liste" aria-label="Dil: Türkçe. Dil listesini aç">
+          <svg class="dil__kure" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.4 2.6 3.6 5.6 3.6 9s-1.2 6.4-3.6 9c-2.4-2.6-3.6-5.6-3.6-9S9.6 5.6 12 3z"/></svg>
+          <span class="dil__kod" aria-hidden="true">TR</span>
+          <svg class="dil__ok" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5"/></svg>
+        </button>
+        <ul class="dil__liste" id="dil-liste" aria-label="Dil seçimi" hidden>
+          <li><button type="button" data-dil="tr" lang="tr" aria-current="true"><span>Türkçe</span><span class="dil__kisa">TR</span></button></li>
+          <li><button type="button" data-dil="en" lang="en"><span>English</span><span class="dil__kisa">EN</span></button></li>
+          <li><button type="button" data-dil="ru" lang="ru"><span>Русский</span><span class="dil__kisa">RU</span></button></li>
+          <li><button type="button" data-dil="de" lang="de"><span>Deutsch</span><span class="dil__kisa">DE</span></button></li>
+          <li><button type="button" data-dil="ar" lang="ar"><span dir="rtl">العربية</span><span class="dil__kisa">AR</span></button></li>
+        </ul>
+      </div>
       <a class="dugme dugme--birincil ust__cta" href="#iletisim" data-i18n="ctaYazin">Bize yazın</a>
       <button class="menu-dugme" type="button" id="menu-dugme" aria-controls="menu" aria-expanded="false" aria-label="Menüyü aç" data-i18n-aria="menuAc">
         <span></span><span></span>
@@ -91,7 +105,7 @@
   <aside class="kunye" aria-label="Bu kumaşın künyesi" data-i18n-aria="kunyeEtiket">
     <div class="kunye__kart">
       <span class="kunye__halka" aria-hidden="true"></span>
-      <p class="kunye__ust"><span class="kunye__marka">Antra Tech</span><span>Jakar · lampas</span></p>
+      <p class="kunye__ust"><span class="kunye__marka">Antra Tech</span><span data-i18n="kunyeTur">Jakar · lampas</span></p>
       <p class="kunye__baslik" data-i18n="kunyeBaslik">Kumaş künyesi</p>
       <div class="kunye__rapor">
         <svg id="kunye-rapor" viewBox="0 0 60 60" aria-hidden="true"><rect class="kunye__rapor-zemin" width="60" height="60"/><path id="kunye-rapor-kare" d="M0 0h10v10h-10zM10 0h10v10h-10zM30 0h10v10h-10zM40 0h10v10h-10zM10 10h10v10h-10zM20 10h10v10h-10zM40 10h10v10h-10zM50 10h10v10h-10zM0 20h10v10h-10zM20 20h10v10h-10zM30 20h10v10h-10zM50 20h10v10h-10zM0 30h10v10h-10zM10 30h10v10h-10zM30 30h10v10h-10zM40 30h10v10h-10zM10 40h10v10h-10zM20 40h10v10h-10zM40 40h10v10h-10zM50 40h10v10h-10zM0 50h10v10h-10zM20 50h10v10h-10zM30 50h10v10h-10zM50 50h10v10h-10z"/><path class="kunye__rapor-izgara" d="M10 0V60M20 0V60M30 0V60M40 0V60M50 0V60M0 10H60M0 20H60M0 30H60M0 40H60M0 50H60"/></svg>
@@ -147,7 +161,7 @@
           <span class="harita__etiket harita__etiket--deniz" style="--x:46.9%;--y:62%" aria-hidden="true" data-i18n="denizHazar">Hazar</span>
           <span class="harita__etiket harita__etiket--deniz" style="--x:15.81%;--y:94%" aria-hidden="true" data-i18n="denizAk">Akdeniz</span>
           <span class="harita__etiket harita__etiket--deniz" style="--x:60.65%;--y:47.19%" aria-hidden="true" data-i18n="denizAral">Aral</span>
-          <span class="harita__pin harita__pin--merkez harita__pin--alt" style="--x:9.36%;--y:64.29%" aria-hidden="true"><i></i><b>Çorlu</b></span>
+          <span class="harita__pin harita__pin--merkez harita__pin--alt" style="--x:9.36%;--y:64.29%" aria-hidden="true"><i></i><b data-i18n="haritaMerkez">Çorlu</b></span>
           <span class="harita__pin harita__pin--alt" data-ulke="az" style="--x:44.89%;--y:67.62%"><i></i><b data-i18n="ulke_az">Azerbaycan</b><small data-i18n="baskent_az">Bakü</small><small class="harita__km"><span data-km="1852">1.852</span> km</small></span>
           <span class="harita__pin harita__pin--sag" data-ulke="tm" style="--x:58.68%;--y:78.18%"><i></i><b data-i18n="ulke_tm">Türkmenistan</b><small data-i18n="baskent_tm">Aşkabat</small><small class="harita__km"><span data-km="2633">2.633</span> km</small></span>
           <span class="harita__pin harita__pin--alt" data-ulke="uz" style="--x:76.26%;--y:63.59%"><i></i><b data-i18n="ulke_uz">Özbekistan</b><small data-i18n="baskent_uz">Taşkent</small><small class="harita__km"><span data-km="3435">3.435</span> km</small></span>

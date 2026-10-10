@@ -8,7 +8,7 @@
  * hücreyi çevirir, değişiklik canlı bölgede okunur.
  */
 import { kumasCiz, lupKur } from './numune.mjs';
-import { metin, etkinDil } from '../ceviri.mjs';
+import { metin, yuzde as yuzdeYaz } from '../ceviri.mjs';
 
 export const N = 8;
 
@@ -147,7 +147,7 @@ export function atolyeKur(kok) {
     const yuzde = Math.round(a.cozguYuzu * 100);
     const atla = (x) => (x === Infinity ? '∞' : String(x));
     sonuc.innerHTML = `
-      <div><dt>${metin('atolyeYuz')}</dt><dd>${etkinDil() === 'en' ? `${yuzde}%` : `%${yuzde}`} <small>${yuzde > 55 ? metin('atolyeCozguYuzlu') : yuzde < 45 ? metin('atolyeAtkiYuzlu') : metin('atolyeDengeli')}</small></dd></div>
+      <div><dt>${metin('atolyeYuz')}</dt><dd>${yuzdeYaz(yuzde)} <small>${yuzde > 55 ? metin('atolyeCozguYuzlu') : yuzde < 45 ? metin('atolyeAtkiYuzlu') : metin('atolyeDengeli')}</small></dd></div>
       <div><dt>${metin('atolyeAtlama')}</dt><dd>${atla(a.cozguAtlama)} / ${atla(a.atkiAtlama)}</dd></div>
       <div><dt>${metin('atolyeRapor')}</dt><dd>${a.rapor[0]} × ${a.rapor[1]}</dd></div>`;
     const uyarilar = [];

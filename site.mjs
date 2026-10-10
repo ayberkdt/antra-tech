@@ -26,7 +26,7 @@ function gozle(el, { yakin = '200px', ilk, gorunur } = {}) {
 }
 
 /* ── dil ── */
-dilKur({ dugme: $('#dil-dugme') });
+dilKur({ dugme: $('#dil-dugme'), liste: $('#dil-liste') });
 
 /* ── üst şerit: dolu zemin, kaydırma ilerlemesi, etkin bölüm ── */
 const ust = $('#ust');

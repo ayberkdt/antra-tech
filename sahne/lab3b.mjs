@@ -12,7 +12,7 @@
  */
 import { THREE, TAU, kesir, yumusak, tuval, dokuYap, kumasDokusu, renderKur, malzemeler, kurucu, kaideKur, derle } from './uc-ortak.mjs';
 import { cekmeEgrisi, KOPMA } from './surec-ortak.mjs';
-import { metin, etkinDil } from '../ceviri.mjs';
+import { metin, sayi, yuzde, buyuk as buyukHarf } from '../ceviri.mjs';
 
 const VW = 360, VH = 460;                      /* veri paneli mantıksal boyutu */
 const R = { zemin: '#0e1229', ciz: 'rgba(243,238,228,.8)', ince: 'rgba(243,238,228,.42)', krem: '#f3eee4', kirmizi: '#e2585a', pirinc: '#b4967b', laci: '#3d4f9a' };
@@ -235,18 +235,15 @@ export function labUcKur({ ucTuval, veriTuval, azHareket = false, model }) {
   const lw = (px) => px / vo;
   const yazi = (s, x, y, renk = R.ince, boy = 11, hiza = 'left', agirlik = 500, aile = '"JetBrains Mono", monospace') => { vctx.fillStyle = renk; vctx.font = `${agirlik} ${lw(boy)}px ${aile}`; vctx.textAlign = hiza; vctx.fillText(s, x, y); };
   const buyuk = (s, x, y, boy = 40, renk = R.krem, hiza = 'left') => yazi(s, x, y, renk, boy, hiza, 300, 'Fraunces, Georgia, serif');
-  const sayi = (n, b = 0) => n.toLocaleString(etkinDil() === 'en' ? 'en-GB' : 'tr-TR', { minimumFractionDigits: b, maximumFractionDigits: b });
-  const en = () => etkinDil() === 'en';
-  const yuzde = (v) => (en() ? `${v}%` : `%${v}`);
-  const baslik = (s) => { yazi(s.toLocaleUpperCase(en() ? 'en' : 'tr'), 24, 34, 'rgba(243,238,228,.62)', 12); vctx.fillStyle = R.kirmizi; vctx.fillRect(24, 44, 28, lw(2)); };
+  const baslik = (s) => { yazi(buyukHarf(s), 24, 34, 'rgba(243,238,228,.62)', 12); vctx.fillStyle = R.kirmizi; vctx.fillRect(24, 44, 28, lw(2)); };
 
   /* T1 veri: kuvvet–uzama eğrisi */
   const CEKME_SURE = 6, FMAX = 1180, EMAX = 31;
   function veriCekme(e, kopuk, imlec) {
-    baslik(en() ? 'Force – elongation' : 'Kuvvet – uzama');
+    baslik(metin('panel1Baslik'));
     const s = Math.min(e, 0.95), f = kopuk ? cekmeEgrisi(KOPMA - 1e-4) * FMAX : cekmeEgrisi(s) * FMAX;
     buyuk(`${sayi(f)}`, 24, 104, 44); yazi('N', 24 + vctx.measureText(sayi(f)).width + lw(6), 104, R.ince, 13);
-    yazi(`${en() ? 'elongation' : 'uzama'} ${yuzde(sayi((kopuk ? KOPMA : s) * EMAX, 1))}`, 24, 128, R.krem, 13);
+    yazi(`${metin('panelUzama')} ${yuzde(sayi((kopuk ? KOPMA : s) * EMAX, 1))}`, 24, 128, R.krem, 13);
     const gx = 44, gy = 410, gw = 290, gh = 230;
     vctx.strokeStyle = R.ince; vctx.lineWidth = lw(1);
     for (let k = 1; k <= 3; k++) { const y = gy - gh * (k * 400) / (FMAX * 1.1); vctx.beginPath(); vctx.moveTo(gx, y); vctx.lineTo(gx + gw, y); vctx.stroke(); yazi(sayi(k * 400), gx - 6, y + 4, R.ince, 11, 'right'); }
@@ -261,7 +258,7 @@ export function labUcKur({ ucTuval, veriTuval, azHareket = false, model }) {
     if (kopuk) {
       const tx = gx + (KOPMA / 0.95) * gw, ty = gy - cekmeEgrisi(KOPMA - 1e-4) / 1.1 * gh;
       vctx.setLineDash([lw(4), lw(4)]); vctx.strokeStyle = R.pirinc; vctx.lineWidth = lw(1); vctx.beginPath(); vctx.moveTo(tx, ty); vctx.lineTo(tx, gy); vctx.stroke(); vctx.setLineDash([]);
-      yazi(en() ? 'BREAK' : 'KOPMA', tx - 6, ty - 10, R.pirinc, 9, 'right');
+      yazi(metin('panelKopma'), tx - 6, ty - 10, R.pirinc, 9, 'right');
     }
     if (imlec && imlec.x >= gx && imlec.x <= px && imlec.y > gy - gh - 20 && imlec.y < gy + 20) {
       const q = (imlec.x - gx) / gw * 0.95, ay = gy - cekmeEgrisi(q) / 1.1 * gh;
@@ -283,7 +280,7 @@ export function labUcKur({ ucTuval, veriTuval, azHareket = false, model }) {
     baslik('Martindale');
     if (tazele) devirG = devir;
     buyuk(sayi(devirG), 24, 104, 44);
-    yazi(en() ? 'cycles / 40,000' : 'devir / 40.000', 24, 128, R.krem, 13);
+    yazi(`${metin('panelDevir')} / ${sayi(40000)}`, 24, 128, R.krem, 13);
     vctx.fillStyle = 'rgba(243,238,228,.1)'; vctx.fillRect(24, 142, 312, lw(5));
     vctx.fillStyle = R.kirmizi; vctx.fillRect(24, 142, 312 * oran, lw(5));
     const cx = 180, cy = 290, r = 104;
@@ -297,14 +294,14 @@ export function labUcKur({ ucTuval, veriTuval, azHareket = false, model }) {
     vctx.strokeStyle = R.krem; vctx.lineWidth = lw(1.5); vctx.beginPath(); vctx.arc(cx + hx * r * 1.4, cy + hy * r * 1.4, lw(9), 0, TAU); vctx.stroke();
     const derece = Math.max(1, Math.round((5 - oran * 2.6) * 2) / 2);
     const dy = Number.isInteger(derece) ? String(derece) : `${Math.floor(derece)}–${Math.ceil(derece)}`;
-    yazi(`${en() ? 'PILLING GRADE' : 'TÜYLENME DERECESİ'}  ${dy}`, 24, 440, R.krem, 11);
+    yazi(`${metin('panelTuylenme')}  ${dy}`, 24, 440, R.krem, 11);
     return metin('lab2Olcum').replace('{n}', sayi(devirG));
   }
   /* T3 veri: mavi yün 1–8 ve gri skala */
   function veriHaslik(poz) {
-    baslik(en() ? 'Blue wool 1–8' : 'Mavi yün 1–8');
+    baslik(metin('panel3Baslik'));
     const saat = Math.round(poz * 72);
-    buyuk(sayi(saat), 24, 104, 44); yazi(en() ? 'hours exposed' : 'saat pozlama', 24, 128, R.krem, 13);
+    buyuk(sayi(saat), 24, 104, 44); yazi(metin('panelSaat'), 24, 128, R.krem, 13);
     for (let d = 1; d <= 8; d++) {
       const k = solma(poz, d), x = 24 + (d - 1) * 39;
       vctx.fillStyle = `rgb(${Math.round(40 + 160 * k)}, ${Math.round(70 + 140 * k)}, ${Math.round(170 + 50 * k)})`; vctx.fillRect(x, 150, 32, 130);
@@ -312,9 +309,9 @@ export function labUcKur({ ucTuval, veriTuval, azHareket = false, model }) {
       vctx.strokeStyle = R.ince; vctx.lineWidth = lw(1); vctx.strokeRect(x, 150, 32, 130);
       yazi(String(d), x + 16, 298, R.ince, 11, 'center');
     }
-    yazi(en() ? 'masked' : 'örtülü', 24, 146 - 4, R.ince, 8);
+    yazi(metin('lab3Ortulu'), 24, 146 - 4, R.ince, 8);
     const kayip = solma(poz, 4), derece = Math.max(1, 5 - kayip * 5.2), yarim = Math.round(derece * 2) / 2;
-    yazi(en() ? 'GREY SCALE' : 'GRİ SKALA', 24, 336, R.ince, 11);
+    yazi(metin('panelGriSkala'), 24, 336, R.ince, 11);
     for (let i = 0; i < 5; i++) {
       const g = 90 + i * 30, x = 24 + i * 63;
       vctx.fillStyle = `rgb(${g}, ${g}, ${g + 8})`; vctx.fillRect(x, 348, 26, 40);
@@ -329,9 +326,9 @@ export function labUcKur({ ucTuval, veriTuval, azHareket = false, model }) {
   /* T4 veri: kesit + geçirgenlik göstergesi */
   function veriGecir(siklik) {
     const { bosluk, gecis } = gecirgenlik(siklik);
-    baslik(en() ? 'Air permeability' : 'Hava geçirgenliği');
+    baslik(metin('panel4Baslik'));
     const y = sayi(gecis * 100, 0);
-    buyuk(yuzde(y), 24, 104, 44); yazi(`${siklik} ${en() ? 'threads/cm' : 'tel/cm'}`, 24, 128, R.krem, 13);
+    buyuk(yuzde(y), 24, 104, 44); yazi(`${siklik} ${metin('panelTelCm')}`, 24, 128, R.krem, 13);
     const cy = 250, n = Math.round(siklik / 4.2), adim = 300 / n, rr = Math.min(adim * 0.5 * (1 - bosluk * 0.5), 22);
     vctx.fillStyle = 'rgba(61, 79, 154, .18)'; vctx.fillRect(24, 160, 312, 70); vctx.fillStyle = 'rgba(61, 79, 154, .07)'; vctx.fillRect(24, 270, 312, 70);
     yazi('p₁', 30, 178, R.ince, 11); yazi('p₂ < p₁', 30, 336, R.ince, 11);
@@ -339,24 +336,24 @@ export function labUcKur({ ucTuval, veriTuval, azHareket = false, model }) {
     for (let i = 0; i < n; i++) { const x = 30 + adim * (i + 0.5), yy = cy + (i % 2 ? rr : -rr) * 0.9; i ? vctx.lineTo(x, yy) : vctx.moveTo(x, yy); }
     vctx.stroke();
     for (let i = 0; i < n; i++) { vctx.beginPath(); vctx.arc(30 + adim * (i + 0.5), cy, rr, 0, TAU); vctx.fillStyle = R.laci; vctx.fill(); vctx.strokeStyle = R.ciz; vctx.lineWidth = lw(1); vctx.stroke(); }
-    yazi(en() ? 'PERMEABILITY' : 'GEÇİRGENLİK', 24, 384, R.ince, 11);
+    yazi(metin('panelGecirgenlik'), 24, 384, R.ince, 11);
     vctx.fillStyle = 'rgba(243,238,228,.1)'; vctx.fillRect(24, 394, 312, lw(8));
     vctx.fillStyle = R.kirmizi; vctx.fillRect(24, 394, 312 * Math.min(1, gecis * 1.25), lw(8));
     return metin('lab4Olcum').replace('{s}', String(siklik)).replace('{g}', yuzde(y));
   }
   /* T5 veri: hasar boyu + alev süresi */
   function veriYanma(faz, hasarMm, alevVar) {
-    baslik(en() ? 'Damaged length' : 'Hasar boyu');
+    baslik(metin('panel5Baslik'));
     buyuk(sayi(hasarMm), 24, 104, 44); yazi('mm', 24 + vctx.measureText(sayi(hasarMm)).width + lw(6), 104, R.ince, 13);
     const sn = Math.round(Math.min(faz, 0.45) / 0.45 * 12);
-    yazi(`${en() ? 'flame' : 'alev'} ${sn} s`, 24, 128, R.krem, 13);
+    yazi(`${metin('panelAlev')} ${sn} s`, 24, 128, R.krem, 13);
     const rx = 70, ry0 = 420, rh = 250;
     vctx.fillStyle = 'rgba(61, 79, 154, .35)'; vctx.fillRect(rx, ry0 - rh, 70, rh);
     vctx.fillStyle = '#0a0a0e'; vctx.fillRect(rx, ry0 - rh * (hasarMm / 100), 70, rh * (hasarMm / 100));
     vctx.strokeStyle = R.ciz; vctx.lineWidth = lw(1); vctx.strokeRect(rx, ry0 - rh, 70, rh);
     for (let mm = 0; mm <= 100; mm += 10) { const y = ry0 - rh * mm / 100; vctx.beginPath(); vctx.moveTo(rx + 70, y); vctx.lineTo(rx + 70 + (mm % 50 ? 6 : 12), y); vctx.stroke(); if (mm % 50 === 0) yazi(String(mm), rx + 90, y + 4, R.ince, 11); }
     vctx.strokeStyle = R.kirmizi; vctx.lineWidth = lw(2); const hy = ry0 - rh * (hasarMm / 100); vctx.beginPath(); vctx.moveTo(rx - 10, hy); vctx.lineTo(rx + 84, hy); vctx.stroke();
-    yazi(alevVar ? (en() ? 'FLAME ON' : 'ALEV VAR') : (en() ? 'AFTER-FLAME 0 s' : 'KOR SÜRESİ 0 s'), 200, 260, alevVar ? R.kirmizi : R.krem, 10);
+    yazi(alevVar ? (metin('panelAlevVar')) : (metin('panelKorSifir')), 200, 260, alevVar ? R.kirmizi : R.krem, 10);
     return metin('lab5Olcum').replace('{s}', String(sn)).replace('{h}', sayi(hasarMm));
   }
 

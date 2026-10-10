@@ -11,7 +11,7 @@
  */
 
 /* 2B YEDEK: WebGL yoksa ya da 3B sahne kurulamazsa site.mjs bunu yükler (3B sahne: surec3b.mjs) */
-import { metin } from '../ceviri.mjs';
+import { metin, buyuk } from '../ceviri.mjs';
 import { S, ADIM, KOPMA, ilerlemeHesapla, kamera, cekmeEgrisi, adimBagla } from './surec-ortak.mjs';
 
 export { S, ADIM, KOPMA, ilerlemeHesapla, kamera, cekmeEgrisi };
@@ -554,7 +554,7 @@ export function surecKur({ iz, tuval, adimlar, azHareket }) {
         ctx.strokeStyle = i === cam.etkin ? R.kirmizi : R.pirinc; ctx.lineWidth = lw(1);
         ctx.fillStyle = i === cam.etkin ? 'rgba(243, 238, 228, .9)' : 'rgba(243, 238, 228, .45)';
         ctx.font = `500 ${lw(10.5)}px "JetBrains Mono", monospace`; ctx.textBaseline = 'middle';
-        const etiket = kp.toLocaleUpperCase(document.documentElement.lang === 'en' ? 'en' : 'tr');
+        const etiket = buyuk(kp);
         if (G < 640) {          /* dar ekranda yanda yer yok: mührün altında ortalı */
           ctx.textAlign = 'center'; ctx.fillText(etiket, S / 2, 150 + 25 + lw(14));
         } else {
@@ -565,7 +565,7 @@ export function surecKur({ iz, tuval, adimlar, azHareket }) {
       }
       ctx.fillStyle = i === cam.etkin ? 'rgba(243, 238, 228, .85)' : 'rgba(243, 238, 228, .4)';
       ctx.font = `500 ${lw(11)}px "JetBrains Mono", monospace`; ctx.textAlign = 'center';
-      ctx.fillText(`${String(i + 1).padStart(2, '0')} · ${adlar[i].toLocaleUpperCase(document.documentElement.lang === 'en' ? 'en' : 'tr')}`, S / 2, ZEMIN + lw(26));
+      ctx.fillText(`${String(i + 1).padStart(2, '0')} · ${buyuk(adlar[i])}`, S / 2, ZEMIN + lw(26));
       /* spot ışığı: kamera merkezinden uzaklaştıkça istasyon zemin rengine doğru kararır */
       const uzak = Math.min(1, Math.abs(x0 + S / 2 - cam.x) / S);
       if (uzak > 0.02) { ctx.fillStyle = `rgba(21, 27, 56, ${(0.5 * uzak * uzak * (3 - 2 * uzak)).toFixed(3)})`; ctx.fillRect(0, UST, S, ALT - UST); }

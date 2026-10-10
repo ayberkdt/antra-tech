@@ -20,7 +20,12 @@ const { ilerlemeHesapla, kamera, cekmeEgrisi, S, ADIM } = await import('../sahne
 const { ORGU, KUMASLAR, zikzak, karma, gurultu } = await import('../sahne/numune.mjs');
 const { acikMi, istanbulZamani, saatEki } = await import('../sahne/saatler.mjs');
 const { gecirgenlik, solma, lissajous, TESTLER } = await import('../sahne/laboratuvar.mjs');
-const { EN, JS } = await import('../ceviri.mjs');
+/* çeviriler: TR açılış paketinde (ceviri.mjs JS.tr + index.html); EN/RU/DE/AR dil/*.mjs (SAYFA + JS) */
+const { JS: JSc, DILLER } = await import('../ceviri.mjs');
+const DIL_DOSYA = {};
+for (const d of ['en', 'ru', 'de', 'ar']) DIL_DOSYA[d] = await import(`../dil/${d}.mjs`);
+const EN = DIL_DOSYA.en.SAYFA;
+const JS = { tr: JSc.tr, en: DIL_DOSYA.en.JS };
 const { analiz, hazirMatris, HAZIR } = await import('../sahne/atolye.mjs');
 
 console.log('örgü raporları');
@@ -47,7 +52,7 @@ console.log('örgü raporları');
   sina('künye: rapor sayısı koddan', sayfa.includes(`${RAPOR.TX} tel × ${RAPOR.TY} atkı`));
   /* künyede canlandırma hızı (52 atkı/dk) tezgâh verisi gibi okunuyordu, kaldırıldı; iplik satırı shader renklerini anlatır */
   sina('künye: canlandırma hızı tezgâh verisi olarak yazılmaz', !sayfa.includes('atkı / dk'));
-  const enK = (await import('../ceviri.mjs')).EN;
+  const enK = EN;
   sina('künye EN: rapor koddan', enK.kunyeRaporD.startsWith(`${RAPOR.TX} ends × ${RAPOR.TY} picks`) && !('kunyeHizD' in enK));
   sina('jakar raporu yarım atlamaya uygun (TY çift)', RAPOR.TY % 2 === 0 && RAPOR.MW < RAPOR.TX && RAPOR.MH < RAPOR.TY);
   /* numune örgüleri */
@@ -224,7 +229,7 @@ console.log('çeviri ve sayfa bütünlüğü');
   const bosEn = [...anahtarlar].filter((k) => k in EN && (!String(EN[k]).trim() || DENETIM.test(EN[k])));
   sina('her EN değeri dolu ve denetim karaktersiz', bosEn.length === 0, bosEn.join(', '));
   const { readdirSync: rd } = await import('node:fs');
-  const kaynaklar = ['index.html', '404.html', 'site.css', 'site.mjs', 'ceviri.mjs', ...rd(join(KOK, 'sahne')).filter((f) => f.endsWith('.mjs')).map((f) => `sahne/${f}`)];
+  const kaynaklar = ['index.html', '404.html', 'site.css', 'site.mjs', 'ceviri.mjs', ...rd(join(KOK, 'sahne')).filter((f) => f.endsWith('.mjs')).map((f) => `sahne/${f}`), ...rd(join(KOK, 'dil')).map((f) => `dil/${f}`)];
   const bozuk = kaynaklar.filter((f) => DENETIM.test(readFileSync(join(KOK, f), 'utf8')));
   sina('kaynak dosyalarda denetim karakteri yok', bozuk.length === 0, bozuk.join(', '));
   const fazla = Object.keys(EN).filter((k) => !anahtarlar.has(k));
@@ -235,6 +240,24 @@ console.log('çeviri ve sayfa bütünlüğü');
     /* {e} ve {de} yalnız Türkçe saat ekidir (saatEki): İngilizcede karşılığı olmaz */
     const yer = (s) => (s.match(/\{[a-z]+\}/g) || []).filter((y) => y !== '{e}' && y !== '{de}').sort().join();
     sina(`yer tutucular eşleşir: ${k}`, yer(v) === yer(JS.en[k]), `${yer(v)} ≠ ${yer(JS.en[k])}`);
+  }
+  /* RU / DE / AR: EN ile aynı sözleşme — HTML'deki her anahtar (fazlası yok), JS.tr'deki her anahtar, yer tutucular,
+     vurgu işaretleri ([[…]] sayısı EN ile aynı), dolu ve denetim karaktersiz değer */
+  sina('ceviri.mjs beş dili tanır', ['tr', 'en', 'ru', 'de', 'ar'].every((d) => DILLER.includes(d)));
+  const yerT = (x) => (String(x).match(/\{[a-z]+\}/g) || []).filter((y) => y !== '{e}' && y !== '{de}').sort().join();
+  const vurguSay = (x) => (String(x).match(/\[\[/g) || []).length;
+  for (const d of ['ru', 'de', 'ar']) {
+    const { SAYFA, JS: J } = DIL_DOSYA[d];
+    const eks = [...anahtarlar].filter((k) => !(k in SAYFA) && !(k in J)), faz = Object.keys(SAYFA).filter((k) => !anahtarlar.has(k));
+    sina(`${d}: HTML'deki her anahtar var, fazlası yok`, !eks.length && !faz.length, [...eks, ...faz.map((k) => '+' + k)].join(', '));
+    const jEks = Object.keys(JS.tr).filter((k) => !(k in J)), jFaz = Object.keys(J).filter((k) => !(k in JS.tr));
+    sina(`${d}: JS anahtarları JS.tr ile aynı`, !jEks.length && !jFaz.length, [...jEks, ...jFaz.map((k) => '+' + k)].join(', '));
+    const bos = [...Object.entries(SAYFA), ...Object.entries(J)].filter(([, v]) => !String(v).trim() || DENETIM.test(v)).map(([k]) => k);
+    sina(`${d}: her değer dolu ve denetim karaktersiz`, !bos.length, bos.join(', '));
+    const yerBoz = Object.keys(JS.tr).filter((k) => k in J && yerT(J[k]) !== yerT(JS.tr[k]));
+    sina(`${d}: yer tutucular TR ile eşleşir`, !yerBoz.length, yerBoz.join(', '));
+    const vBoz = Object.keys(EN).filter((k) => k in SAYFA && vurguSay(SAYFA[k]) !== vurguSay(EN[k]));
+    sina(`${d}: vurgu işaretleri EN ile aynı sayıda`, !vBoz.length, vBoz.join(', '));
   }
   /* JS'in istediği anahtarlar mevcut */
   /* bütün sahne modülleri taranır (önceden yalnız birkaç dosya okunuyordu, atölye/muayene anahtarları sınanmıyordu) */
@@ -287,8 +310,9 @@ console.log('çeviri ve sayfa bütünlüğü');
   sina('html lang tanımlı', /<html lang="tr">/.test(html));
   /* arama sonucu kesilmesin: başlık ≤ 60, açıklama ≤ 160 (TR HTML'de, EN ceviri.mjs'te) */
   const aciklamaTR = /<meta name="description" content="([^"]+)"/.exec(html)?.[1] || '';
-  const aciklamaEN = /aciklama\.content = dil === 'en' \? '([^']+)'/.exec(readFileSync(join(KOK, 'ceviri.mjs'), 'utf8'))?.[1] || '';
-  sina(`meta açıklama TR ≤ 160 (${aciklamaTR.length}) ve EN ≤ 160 (${aciklamaEN.length})`, aciklamaTR.length > 50 && aciklamaTR.length <= 160 && aciklamaEN.length > 50 && aciklamaEN.length <= 160);
+  sina(`meta açıklama TR ≤ 160 (${aciklamaTR.length})`, aciklamaTR.length > 50 && aciklamaTR.length <= 160);
+  sina('sayfaAciklama TR = HTML meta açıklaması (dil dönüşünde aynı metin)', JS.tr.sayfaAciklama === aciklamaTR);
+  for (const d of ['en', 'ru', 'de', 'ar']) { const a = DIL_DOSYA[d].JS.sayfaAciklama || '', b = DIL_DOSYA[d].JS.sayfaBaslik || ''; sina(`${d}: açıklama ≤ 160 (${a.length}), başlık ≤ 70 (${b.length})`, a.length > 50 && a.length <= 160 && b.length > 10 && b.length <= 70); }
   /* paylaşım önizlemesi göreli görsel adresini çözmez: og:image, og:url ve JSON-LD görseli mutlak olmalı ve dosya var olmalı */
   const ogGorsel = /property="og:image" content="([^"]+)"/.exec(html)?.[1] || '';
   sina(`og:image mutlak ve dosyası var (${ogGorsel})`, ogGorsel.startsWith('https://www.antratech.net/') && existsSync(join(KOK, ogGorsel.replace('https://www.antratech.net/', ''))));
@@ -331,6 +355,7 @@ console.log('çeviri ve sayfa bütünlüğü');
   const basBetik = /<script>([^<]*dil-bekle[^<]*)<\/script>/.exec(html)?.[1] || '';
   const ceviriKaynak = readFileSync(join(KOK, 'ceviri.mjs'), 'utf8');
   for (const anahtar of ["'antratech-dil'", "get('dil')", "/bot|crawl|spider|slurp/i"]) sina(`erken dil tahmini ve ceviri.mjs aynı kaynağı okur: ${anahtar}`, basBetik.includes(anahtar) && ceviriKaynak.includes(anahtar));
+  sina('erken dil tahmini beş dili tanır ve Arapçada yönü erken kurar', ['tr', 'en', 'ru', 'de', 'ar'].every((d) => basBetik.includes(`'${d}'`)) && /h\.dir='rtl'/.test(basBetik));
   sina('erken dil tahmininin güvenlik zaman aşımı var', /setTimeout\(function\(\)\{[^}]*remove\('dil-bekle'\)/.test(basBetik));
   /* JS kapalıyken form adres çubuğuna kişisel veri yazmasın: mailto eylemi + CSP form-action izni */
   sina('iletişim formunun JS’siz mailto eylemi var ve CSP form-action buna izin veriyor', /<form[^>]*id="iletisim-formu"[^>]*action="mailto:/.test(html) && /form-action [^;]*mailto:/.test(csp));
@@ -338,7 +363,7 @@ console.log('çeviri ve sayfa bütünlüğü');
   /* hizmet penceresinin sahadan fotoğrafları JS'te kurulur (HTML yol denetimi görmez): her kimlik için iki boy var mı */
   const fotoKume = /HIZMET_FOTO = new Set\(\[([^\]]+)\]\)/.exec(readFileSync(join(KOK, 'sahne/hizmet.mjs'), 'utf8'))?.[1].match(/'([a-z]+)'/g).map((x) => x.slice(1, -1)) || [];
   sina(`hizmet fotoğrafları yerinde (${fotoKume.length} hizmet × 480/800)`, fotoKume.length >= 5 && fotoKume.every((id) => [480, 800].every((w) => existsSync(join(KOK, `gorseller/boyut/hizmet-${id}-${w}.webp`)))));
-  sina('her hizmet fotoğrafının TR ve EN alt metni var', fotoKume.every((id) => (ceviriKaynak.match(new RegExp(`hizmetFoto_${id}:`, 'g')) || []).length === 2));
+  sina('her hizmet fotoğrafının beş dilde alt metni var', fotoKume.every((id) => `hizmetFoto_${id}` in JS.tr && ['en', 'ru', 'de', 'ar'].every((d) => `hizmetFoto_${id}` in DIL_DOSYA[d].JS)));
   /* ağırlık bütçesi */
   const kb = (p) => statSync(join(KOK, p)).size / 1024;
   /* açılışta yüklenen JS (ilk boyamayı etkiler) ve tembel yüklenen JS ayrı bütçelenir; sahne klasöründeki her dosya sayılır */
